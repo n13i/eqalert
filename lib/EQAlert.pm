@@ -64,11 +64,11 @@ sub parse_earthquake_jp
     {
         if($1 eq '気象庁情報')
         {
-            $alert->{level} = 1;
+            $alert->{level} = EQAlert::Alert::LV_INFO;
         }
         elsif($1 =~ /^速報/)
         {
-            $alert->{level} = 8;
+            $alert->{level} = EQAlert::Alert::LV_WARN;
         }
 
         #$alert->{month} = DateTime->now->month;
@@ -104,7 +104,7 @@ sub parse_zishin3255
 
     $source =~ tr/０-９．/0-9./;
 
-    $alert->{level} = 8;
+    $alert->{level} = EQAlert::Alert::LV_WARN;
 
     if($source =~ /\s(\w+)で地震/)
     {
@@ -140,7 +140,7 @@ sub parse_eew_jp
 
     # 地震速報 2011/04/12 00:21頃、茨城県北部の深さ10kmでマグニチュード4の地震が発生しました。予想される最大震度は震度3です。
 
-    $alert->{level} = 8;
+    $alert->{level} = EQAlert::Alert::LV_WARN;
 
     if($source =~ /\d{4}\/(\d{2})\/(\d{2})\s(\d{2})\:(\d{2})頃、(\w+)の深さ/)
     {
@@ -178,7 +178,7 @@ sub parse_quake_alert
     $source =~ tr/０-９．/0-9./;
     #printf "%s\n", $source;
 
-    $alert->{level} = 8;
+    $alert->{level} = EQAlert::Alert::LV_WARN;
 
     if($source =~ /(\d{1,2})月\s*(\d{1,2})日(\d{1,2})時(\d{1,2})分(\d{1,2})秒\s([^\s]+)\sＭ(\d\.\d)程度/)
     {
@@ -230,7 +230,7 @@ sub parse_yurekuru
     $source =~ tr/０-９．/0-9./;
     #printf "%s\n", $source;
 
-    $alert->{level} = 8;
+    $alert->{level} = EQAlert::Alert::LV_WARN;
 
     if($source =~ /震源地：([^\s]+)\s/)
     {
