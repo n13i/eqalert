@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# restore WidgetPlayer channel to Default
+# after 180secs from last-triggered time
+#
+# please call every minute via cron:
+# * * * * * /psp/opt/eqalert/bin/restore
+
+if [ -e /tmp/eqalert.last ]; then
+	NOW=`date +%s`
+	LAST=`date -r /tmp/eqalert.last +%s`
+	DELTA=`expr ${NOW} - ${LAST}`
+	if [ ${DELTA} -ge 180 ]; then
+		# restore channel to default
+		echo '<event type="WidgetPlayer" value="setChannel" comment="Default"/>' > /tmp/flashplayer.event
+		/usr/bin/chumbyflashplayer.x -F1
+		rm /tmp/eqalert.last
+	fi
+fi
+

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+SCRIPT_NAME=`readlink -f "$0"`
+SCRIPT_PATH=`dirname "${SCRIPT_NAME}"`
+
+. "${SCRIPT_PATH}/../conf/config.sh"
+
+# 画像を生成する
+tempimgfile=`tempfile -p eq_ -s _alert.png`
+rm ${tempimgfile}
+${SCRIPT_PATH}/gen_alertimg ${tempimgfile} "$1" "$2" "$3" "$4" "$5" "$6" "$7"
+mv ${tempimgfile} "${CHUMBY_IMG_DIR}"
+
+# Chumbyにトリガーを出す
+wget --quiet -O /dev/null "${CHUMBY_TRIGGER_URL}?${CHUMBY_IMG_URL}"
+

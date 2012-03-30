@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# change WidgetPlayer channel to Blank
+# then show an image downloaded from passed url
+
+IMGURL=$1
+if [ -n "$1" ]; then
+	rm /tmp/eqalert.png
+	/usr/bin/wget --quiet -O /tmp/eqalert.png "${IMGURL}"
+fi
+if [ -s /tmp/eqalert.png ]; then
+	# is not yet triggered?
+	if [ ! -e /tmp/eqalert.last ]; then
+		# switch to blank channel
+		echo '<event type="WidgetPlayer" value="setChannel" comment="Blank"/>' > /tmp/flashplayer.event
+		/usr/bin/chumbyflashplayer.x -F1 &
+		# draw first, but screen maybe refreshed by widgetplayer
+		/usr/bin/imgtool --mode=draw --fb=0 /tmp/eqalert.png
+		# wait for switching channel
+		touch /tmp/eqalert.last
+		sleep 3
+	fi
+	# draw, though already drawn once
+	/usr/bin/imgtool --mode=draw --fb=0 /tmp/eqalert.png
+	# update last triggered timestamp
+	touch /tmp/eqalert.last
+else
+	echo "download failed"
+fi
+echo "done"
+

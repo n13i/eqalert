@@ -1,0 +1,125 @@
+#!/bin/sh
+
+# Chumby向けの320x240画像を作成する
+
+# 参考
+# 地震情報で用いる震央地名対応表
+# http://www.seisvol.kishou.go.jp/eq/region/table.pdf
+# 気象庁地震情報(震度凡例色パレット)
+
+# usage:
+#  genalertimg.sh
+#    ファイル名 レベル 最大震度 時 分 震央地名 震源深さ マグニチュード
+#    (レベル: 1=地震情報 2=地震速報 4=緊急地震速報)
+OUTFILE="$1"
+LEVEL="$2"
+MAXSCALE="$3"
+TIME="$4:$5"
+EPICENTER="$6"
+EPIDEPTH="$7"
+MAGNITUDE="$8"
+
+#MAXSCALE="7"
+#MAXSCALE="6.9"
+#MAXSCALE="6.1"
+#MAXSCALE="5.9"
+#MAXSCALE="5.1"
+#MAXSCALE="4"
+#MAXSCALE="3"
+#MAXSCALE="2"
+#MAXSCALE="1"
+#MAXSCALE=""
+
+SCRIPT_NAME=`readlink -f "$0"`
+SCRIPT_PATH=`dirname "${SCRIPT_NAME}"`
+
+. "${SCRIPT_PATH}/../conf/config.sh"
+
+SCALETEXTSIZE=130
+SCALEOFFSET=175
+SCALETEXTADD=""
+case "${MAXSCALE}" in
+7)
+    SCALETEXT="７"
+    SCALEBGCOLOR="#ff00ff"
+    ;;
+6.9)
+    SCALETEXT="６"
+    SCALETEXTADD="＋"
+    SCALEBGCOLOR="#ff0000"
+    ;;
+6.1)
+    SCALETEXT="６"
+    SCALETEXTADD="－"
+    SCALEBGCOLOR="#ff6600"
+    ;;
+5.9)
+    SCALETEXT="５"
+    SCALETEXTADD="＋"
+    SCALEBGCOLOR="#ff9900"
+    ;;
+5.1)
+    SCALETEXT="５"
+    SCALETEXTADD="－"
+    SCALEBGCOLOR="#ffcc00"
+    ;;
+4)
+    SCALETEXT="４"
+    SCALEBGCOLOR="#ffff99"
+    ;;
+3)
+    SCALETEXT="３"
+    SCALEBGCOLOR="#00ffcc"
+    ;;
+2)
+    SCALETEXT="２"
+    SCALEBGCOLOR="#99ccff"
+    ;;
+1)
+    SCALETEXT="１"
+    SCALEBGCOLOR="#ffffff"
+    ;;
+*)
+    SCALETEXT="不明"
+    SCALETEXTSIZE=80
+    SCALEOFFSET=160
+    SCALEBGCOLOR="#ffffff"
+    ;;
+esac
+
+case "${LEVEL}" in
+4)
+    ALERTTEXT="地震発生"
+    ALERTFGCOLOR="red"
+    ;;
+2)
+    ALERTTEXT="地震発生"
+    ALERTFGCOLOR="yellow"
+    ;;
+*)
+    ALERTTEXT="地震情報"
+    ALERTFGCOLOR="cyan"
+    ;;
+esac
+
+/usr/bin/convert -depth 4 -size 320x240 xc:black -background none \
+    -fill ${SCALEBGCOLOR} -draw 'rectangle 160,0,320,160' \
+    -fill black \
+    -font ${FIXEDFONT} \
+    -pointsize 38 -annotate +165+40 "最大震度" \
+    -font ${BLACKFONT} \
+    -pointsize ${SCALETEXTSIZE} -annotate +${SCALEOFFSET}+150 "${SCALETEXT}" \
+    -pointsize 60 -annotate +265+90 "${SCALETEXTADD}" \
+    -fill ${ALERTFGCOLOR} \
+    -font ${BOLDFONT} \
+    -pointsize 36 -annotate +5+65 "${ALERTTEXT}" \
+    -fill white \
+    -pointsize 32 -annotate +0+195 "${EPICENTER}" \
+    -font ${MEDIUMFONT} \
+    -pointsize 60 -annotate +45+125 "${MAGNITUDE}" \
+    -font ${FIXEDFONT} \
+    -pointsize 60 -annotate +10+125 "M" \
+    -pointsize 32 -annotate +0+230 "深さ${EPIDEPTH}km" \
+    -pointsize 32 -annotate +235+230 "${TIME}" \
+    "${OUTFILE}"
+

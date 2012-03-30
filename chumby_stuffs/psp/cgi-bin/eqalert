@@ -1,0 +1,8 @@
+#!/bin/sh
+echo "HTTP/1.1 200 ok"
+echo "Content-type: text/plain"
+echo ""
+echo "${QUERY_STRING}"
+(/psp/opt/eqalert/bin/trigger "${QUERY_STRING}" 2>&1 1>/dev/null) &
+echo "done"
+
