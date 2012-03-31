@@ -1,0 +1,38 @@
+# ストリーム受信用のTwitterアカウント
+twitter:
+  consumer_key: 
+  consumer_secret: 
+  access_token: 
+  access_token_secret: 
+
+# ストリームを受信するユーザ
+follow_users:
+  # https://api.twitter.com/1/users/show/(screen_name).xml
+  # p2pquake
+  - 23551157
+  # quake_alert (by IIJ)
+  - 267166505
+  # zishin3255
+  - 85251743
+  # eew_jp (by twiple)
+  #- 16052553
+  # earthquake_jp
+  - 4104111
+  # yurekuru (by rcsc)
+  - 216184660
+
+# 一般利用者向け緊急地震速報の検出を通知しているアカウント(p2pquake)
+eew_public_user: 23551157
+
+# 地震速報時，指定震度以上ならwarning，未満ならnotify音を鳴らす
+warning_scale: 3
+# 指定震度以上なら地震情報を通知する
+notify_scale: 1
+
+# サウンドファイル名の設定(sounds/以下に置く)
+sounds:
+  alert: alert.wav
+  warning: warning.wav
+  notify: notify.wav
+  info: info.wav
+

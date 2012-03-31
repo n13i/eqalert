@@ -1,0 +1,15 @@
+# utils/send_to_chumby
+# Chumby側のトリガーCGIのURL
+#CHUMBY_TRIGGER_URL=http://chumby/cgi-bin/custom/eqalert
+# Chumbyに渡す画像のURL
+#CHUMBY_IMG_URL=http://webserver/chumby/eqalert/eqalert.png
+# Chumbyに渡す画像の出力先
+#CHUMBY_IMG_DIR=/var/www/localhost/htdocs/chumby/eqalert/eqalert.png
+
+# utils/gen_alertimg
+# 画像生成時に使用するフォントのパス
+BLACKFONT=/usr/share/fonts/mplus-outline-fonts/mplus-1p-black.ttf
+BOLDFONT=/usr/share/fonts/mplus-outline-fonts/mplus-1p-heavy.ttf
+MEDIUMFONT=/usr/share/fonts/mplus-outline-fonts/mplus-1p-bold.ttf
+FIXEDFONT=/usr/share/fonts/mplus-outline-fonts/mplus-1m-medium.ttf
+
