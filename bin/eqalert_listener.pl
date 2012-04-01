@@ -154,6 +154,8 @@ sub got_eew_for_public_users
 
     $alert->{level} = EQAlert::Alert::LV_ALERT;
     &notify($alert);
+
+    system("$Bin/../utils/capture &");
 }
 
 # 受信したtweetの解析・通知
@@ -214,7 +216,7 @@ sub notify
         if($alert->scale >= $conf->{notify_scale})
         {
             $sound = $conf->{sounds}->{info};
-            my $talk = sprintf "地震情報、%d時%d分、最大震度%s、%s、深さ%sキロ、マグニチュード%s。",
+            $talk = sprintf "地震情報、%d時%d分、最大震度%s、%s、深さ%sキロ、マグニチュード%s。",
                 $alert->{hour},
                 $alert->{minute},
                 $alert->scale,
